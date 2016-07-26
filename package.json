@@ -1,0 +1,30 @@
+{
+  "name": "pokebot",
+  "version": "1.0.0",
+  "description": "a pokemon bot",
+  "main": "index.js",
+  "dependencies": {
+    "async": "^2.0.1",
+    "lodash": "^4.14.0",
+    "pokemon-go-node-api": "^1.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Trias/pokebot.git"
+  },
+  "keywords": [
+    "pokemon",
+    "go",
+    "bot"
+  ],
+  "author": "Stefan Ackermann",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Trias/pokebot/issues"
+  },
+  "homepage": "https://github.com/Trias/pokebot#readme"
+}
