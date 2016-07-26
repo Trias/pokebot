@@ -69,7 +69,7 @@ function generate_location_steps(initial_location, num_steps) {
     return locationSteps;
 }
 
-module.exports = class PokemonRadar extends EventEmitter {
+class PokemonRadar extends EventEmitter {
     constructor(){
         super();
         this.pokeStops = {};
@@ -81,7 +81,7 @@ module.exports = class PokemonRadar extends EventEmitter {
             console.log('[i] Current location: ' + that.pokemonRadar.playerInfo.locationName);
             console.log('[i] lat/long/alt: : ' + that.pokemonRadar.playerInfo.latitude + ' ' + that.pokemonRadar.playerInfo.longitude + ' ' + that.pokemonRadar.playerInfo.altitude);
 
-            var locations = generate_location_steps([that.pokemonRadar.playerInfo.latitude, that.pokemonRadar.playerInfo.longitude], 10);
+            var locations = generate_location_steps([that.pokemonRadar.playerInfo.latitude, that.pokemonRadar.playerInfo.longitude], 2);
 
             console.log(locations);
             that.search(locations);
@@ -104,6 +104,7 @@ module.exports = class PokemonRadar extends EventEmitter {
                 console.log(coords.latitude+','+coords.longitude);
 
                 that.pokemonRadar.Heartbeat(function(err, hb) {
+                    console.log('heartbeat');
                     if (err) {
                         console.error(err);
                         next();
@@ -115,7 +116,7 @@ module.exports = class PokemonRadar extends EventEmitter {
                             var pokemon = that.pokemonRadar.pokemonlist[parseInt(mapPokemon.PokedexNumber) - 1];
                             that.emit('pokemon', mapPokemon);
 
-                            console.log('[+] There is a ' + pokemon.name + ' at ' + mapPokemon.Latitude + ' ' + mapPokemon.Longitude);
+                            console.log('[+] There is a ' + mapPokemon.name + ' at ' + mapPokemon.Latitude + ' ' + mapPokemon.Longitude);
                         });
                         cell.Fort.forEach(function(fort){
                             if(null === fort.FortType || 0 === fort.FortType){
@@ -130,10 +131,15 @@ module.exports = class PokemonRadar extends EventEmitter {
             });
         }, () => {
             that.emit('searchComplete');
-            that.checkLogin(that.search.bind(that, locations))
+            console.log(that.gyms);
+            console.log(that.pokeStops);
+            //that.checkLogin(that.search.bind(that, locations))
         });
     }
-    checkLogin(callback) {
-        callback();
-    }
-};
+
+    // checkLogin(callback) {
+    //     callback();
+    // }
+}
+
+module.exports = PokemonRadar;
