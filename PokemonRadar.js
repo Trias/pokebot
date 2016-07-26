@@ -113,10 +113,10 @@ class PokemonRadar extends EventEmitter {
                         cell.MapPokemon.forEach(function(mapPokemon) {
                             console.log(mapPokemon);
 
-                            var pokemon = that.pokemonRadar.pokemonlist[parseInt(mapPokemon.PokedexNumber) - 1];
+                            var pokemon = that.pokemonRadar.pokemonlist[parseInt(mapPokemon.PokedexTypeId) - 1];
                             that.emit('pokemon', mapPokemon);
 
-                            console.log('[+] There is a ' + mapPokemon.name + ' at ' + mapPokemon.Latitude + ' ' + mapPokemon.Longitude);
+                            console.log('[+] There is a ' + pokemon.name + ' at ' + mapPokemon.Latitude + ' ' + mapPokemon.Longitude);
                         });
                         cell.Fort.forEach(function(fort){
                             if(null === fort.FortType || 0 === fort.FortType){
