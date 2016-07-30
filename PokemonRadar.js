@@ -37,10 +37,8 @@ async function search(locations) {
 
     async function pling (location) {
         console.log('pling');
-        Poke.player.playerInfo.location = {
-            latitude: parseFloat(location[0]),
-            longitude: parseFloat(location[1])
-        };
+        Poke.player.playerInfo.latitude = parseFloat(location[0]);
+        Poke.player.playerInfo.longitude = parseFloat(location[1]);
         var objects = await Poke.GetMapObjects();
 
         for (let pokemon of objects.catchable_pokemons) {
