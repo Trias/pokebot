@@ -1,37 +1,36 @@
 'use strict';
 
-var PokemonGO = require('pokemon-go-node-api');
-var pokeBotConfig = require('./config.pokemonBot.js');
-var PokemonRadar = require('./PokemonRadar');
+var PokeAPI = require('pokemongo-api').default;
+var config = require('./config.pokemonBot.js');
+var pokemonRadar = require('./PokemonRadar');
 
-var pokemonGoBot = new PokemonGO.Pokeio();
-var pokemonRadar = new PokemonRadar();
+var Poke = new PokeAPI();
 
-pokemonGoBot.init(pokeBotConfig.username, pokeBotConfig.password, pokeBotConfig.location, pokeBotConfig.provider, function(err) {
-    if (err) throw err;
+async function init() {
+    Poke.player.location = {
+        latitude: 49.9606927,
+        longitude: 9.1541567
+    };
+    await Poke.login(config.username, config.password, config.provider);
 
-    console.log('1[i] Current location: ' + pokemonGoBot.playerInfo.locationName);
-    console.log('1[i] lat/long/alt: : ' + pokemonGoBot.playerInfo.latitude + ' ' + pokemonGoBot.playerInfo.longitude + ' ' + pokemonGoBot.playerInfo.altitude);
+    var player = await Poke.GetPlayer();
+    var inventory = await Poke.GetInventory();
 
-    pokemonGoBot.GetProfile(function(err, profile) {
-        if (err) throw err;
+    //console.log(player, inventory);
+    //console.log('1[i] Username: ' + player.username);
+    //console.log('1[i] Poke Storage: ' + player.currencies[0]);
+    //console.log('1[i] Item Storage: ' + inventory.GetInventoryResponse.inventory_delta.inventory_items);
+    //console.log('1[i] Pokecoin: ' + player.currencies[0].amount);
+    //console.log('1[i] Stardust: ' + player.currencies[1].amount);
 
-        var poke = profile.currency[0].amount || 0;
-
-        console.log('1[i] Username: ' + profile.username);
-        console.log('1[i] Poke Storage: ' + profile.poke_storage);
-        console.log('1[i] Item Storage: ' + profile.item_storage);
-        console.log('1[i] Pokecoin: ' + poke);
-        console.log('1[i] Stardust: ' + profile.currency[1].amount);
-
-        pokemonRadar.on('searchComplete', function(){
-            // farm pokestops
-            console.log('searchComplete event');
-        });
-
-        pokemonRadar.on('pokemon', function(){
-            console.log('pokemonEvent event');
-        });
+    pokemonRadar.on('searchComplete', function () {
+        // farm pokestops
+        console.log('searchComplete event');
     });
-});
 
+    pokemonRadar.on('pokemon', function () {
+        console.log('pokemonEvent event');
+    })
+}
+
+init().catch(console.log);
